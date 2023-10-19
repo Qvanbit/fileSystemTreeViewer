@@ -1,10 +1,8 @@
 import os
-import re
 
 from PyQt6.QtWidgets import QTreeView, QVBoxLayout, QWidget, QLineEdit, QMainWindow, QApplication
 from PyQt6.QtGui import QStandardItem, QStandardItemModel
 from PyQt6.QtCore import QDir, Qt, QSortFilterProxyModel, QRegularExpression
-import concurrent.futures
 
 
 class FileSystemTreeViewer(QMainWindow):
@@ -37,19 +35,16 @@ class FileSystemTreeViewer(QMainWindow):
         self.layout.addWidget(self.filterLineEdit)
         self.layout.addWidget(self.treeView)
 
-        self.load_tree(os.path.expanduser("~"))
-        rootIndex = self.sortModel.mapFromSource(self.model.index(0, 0))
-        self.treeView.setExpanded(rootIndex, True)
+        # Используйте домашний каталог пользователя
+        home_dir = os.path.expanduser("~")
+        self.load_tree(home_dir)  # Загружайте файлы из домашней директории пользователя
 
     def load_tree(self, rootPath):
         self.cache = {}
         dir = QDir(rootPath)
-        root_item = self.model.invisibleRootItem()
-        item = QStandardItem(dir.dirName())
-        item.setData(rootPath, Qt.ItemDataRole.UserRole)
-        root_item.appendRow(item)
-        self.cache[rootPath] = item
-        self.add_items(item, dir)
+
+        # Добавьте элементы из домашней директории непосредственно на верхний уровень
+        self.add_items(self.model.invisibleRootItem(), dir)
 
     def add_items(self, parent_item, dir):
         for entry_info in dir.entryInfoList(QDir.Filter.AllEntries | QDir.Filter.Hidden | QDir.Filter.NoDotAndDotDot,
