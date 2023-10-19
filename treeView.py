@@ -1,10 +1,10 @@
 import os
-import re
+
 
 from PyQt6.QtWidgets import QTreeView, QVBoxLayout, QWidget, QLineEdit, QMainWindow, QApplication
 from PyQt6.QtGui import QStandardItem, QStandardItemModel
-from PyQt6.QtCore import QDir, Qt, QSortFilterProxyModel, QRegularExpression
-import concurrent.futures
+from PyQt6.QtCore import QDir, Qt, QSortFilterProxyModel
+
 
 
 class FileSystemTreeViewer(QMainWindow):
